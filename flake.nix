@@ -16,9 +16,17 @@
 
     lanzaboote.url = "github:nix-community/lanzaboote";
 
+    # end-4's own lockfile pins QuickShell 0.2.x, which does not build with
+    # current Qt. Provide and follow the current upstream QuickShell instead.
+    quickshell = {
+      url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     illogical-impulse = {
       url = "github:xBLACKICEx/end-4-dots-hyprland-nixos";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.quickshell.follows = "quickshell";
     };
 
     sops-nix = {

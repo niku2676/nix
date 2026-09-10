@@ -58,18 +58,6 @@ in
     defaultEditor = true;
   };
 
-  # The end-4 module provides the QuickShell-based desktop and Hyprland
-  # defaults. Kitty stays disabled: Ghostty is this setup's terminal.
-  illogical-impulse = lib.mkIf (!bootstrap) {
-    enable = true;
-    hyprland.ozoneWayland.enable = true;
-    dotfiles = {
-      fish.enable = true;
-      kitty.enable = false;
-      starship.enable = true;
-    };
-  };
-
   # The install ISO only has a small writable Nix store. Applications are
   # enabled after the first boot, when /nix/store lives on the 100 GB SSD.
   home.packages =
@@ -89,4 +77,16 @@ in
 
     Resolve them explicitly in README.md; do not add arbitrary curl installers.
   '';
+} // lib.optionalAttrs (!bootstrap) {
+  # The end-4 module provides the QuickShell-based desktop and Hyprland
+  # defaults. Kitty stays disabled: Ghostty is this setup's terminal.
+  illogical-impulse = {
+    enable = true;
+    hyprland.ozoneWayland.enable = true;
+    dotfiles = {
+      fish.enable = true;
+      kitty.enable = false;
+      starship.enable = true;
+    };
+  };
 }

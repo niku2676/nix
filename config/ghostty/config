@@ -1,0 +1,3 @@
+# Copied deliberately from the macOS Ghostty configuration.
+# It contained only Ghostty's generated template and no user overrides.
+# Keeping this file lets future Ghostty settings stay declarative in this repo.

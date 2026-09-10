@@ -1,0 +1,12 @@
+# Build outputs and local developer state
+result
+result-*
+.direnv/
+.DS_Store
+
+# Never commit private key material or local decrypted SOPS state.
+*.agekey
+*.pem
+*.key
+age/keys.txt
+secrets/decrypted/

@@ -35,24 +35,30 @@
     illogical-impulse,
     sops-nix,
     ...
-  }: {
-    nixosConfigurations.buls = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = { inherit inputs; };
+  }:
+    let
+      mkSystem = bootstrap: nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs bootstrap; };
 
-      modules = [
-        disko.nixosModules.disko
-        lanzaboote.nixosModules.lanzaboote
-        sops-nix.nixosModules.sops
-        home-manager.nixosModules.home-manager
-        ./hosts/buls
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = { inherit inputs; };
-          home-manager.users.nikita = import ./home/nikita;
-        }
-      ];
+        modules = [
+          disko.nixosModules.disko
+          lanzaboote.nixosModules.lanzaboote
+          sops-nix.nixosModules.sops
+          home-manager.nixosModules.home-manager
+          ./hosts/buls
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = { inherit inputs bootstrap; };
+            home-manager.users.nikita = import ./home/nikita;
+          }
+        ];
+      };
+    in {
+      nixosConfigurations = {
+        buls = mkSystem false;
+        buls-bootstrap = mkSystem true;
+      };
     };
-  };
 }

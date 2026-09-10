@@ -1,4 +1,4 @@
-{ lib, pkgs, inputs, ... }:
+{ lib, pkgs, inputs, bootstrap ? false, ... }:
 
 let
   # Each selected application stays visible here. Names not present in the
@@ -67,7 +67,10 @@ in
     };
   };
 
-  home.packages = builtins.filter (pkg: pkg != null) (map packageFor selectedPackageNames);
+  # The install ISO only has a small writable Nix store. Applications are
+  # enabled after the first boot, when /nix/store lives on the 100 GB SSD.
+  home.packages = lib.optionals (!bootstrap)
+    (builtins.filter (pkg: pkg != null) (map packageFor selectedPackageNames));
 
   xdg.enable = true;
   xdg.configFile."ghostty/config".source = ../../config/ghostty/config;

@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, bootstrap ? false, ... }:
 
 {
   imports = [
@@ -43,7 +43,9 @@
   security.rtkit.enable = true;
 
   virtualisation.docker.enable = true;
-  programs.steam.enable = true;
+  # Steam's closure is deliberately deferred until the first rebuild on the
+  # installed SSD; the minimal ISO has too little writable Nix store space.
+  programs.steam.enable = !bootstrap;
 
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";

@@ -34,16 +34,15 @@ aktuelle Mac ist ausschliesslich die Migrationsquelle; er wird nicht veraendert.
 
 ## Vor der ersten Installation: zwingend
 
-`hosts/buls/disko.nix` enthaelt absichtlich diesen ungültigen Platzhalter:
+`hosts/buls/disko.nix` ist auf die dedizierte NixOS-SSD festgelegt:
 
 ```nix
-device = "/dev/disk/by-id/REPLACE_WITH_NIXOS_SSD";
+device = "/dev/disk/by-id/ata-P4-120_08B12Z593604";
 ```
 
-Er muss **einmalig auf dem PC** durch den stabilen `/dev/disk/by-id/...`-Pfad
-der dedizierten Linux-SSD ersetzt werden. Vergleiche vorher Modell, Groesse und
-Seriennummer. Windows darf dort nie erscheinen. Disko partitioniert und
-formatiert sein Ziel vollstaendig.
+Sie wurde auf dem Ziel-PC als SATA-SSD P4-120 mit 111.8 GB und der Seriennummer
+`08B12Z593604` verifiziert. Windows darf dort nie erscheinen. Disko
+partitioniert und formatiert sein Ziel vollstaendig.
 
 Die Datei `hosts/buls/hardware-configuration.nix` ist ebenfalls nur ein
 gueltiger Platzhalter. Sie wird erst vom NixOS-Installer auf dem Ziel-PC
@@ -62,15 +61,16 @@ git clone git@github.com:niku2676/nix.git /tmp/nix
 cd /tmp/nix
 
 # Erst jetzt: Disko-Pfad in hosts/buls/disko.nix kontrollieren und ersetzen.
-nix flake lock
-sudo nix run github:nix-community/disko -- --mode disko ./hosts/buls/disko.nix
+nix --extra-experimental-features 'nix-command flakes' flake lock
+sudo nix --extra-experimental-features 'nix-command flakes' \
+  run github:nix-community/disko -- \
+  --mode destroy,format,mount ./hosts/buls/disko.nix
 
 # Disko hat das neue System unter /mnt eingehangen.
 sudo nixos-generate-config --root /mnt
 sudo cp /mnt/etc/nixos/hardware-configuration.nix ./hosts/buls/hardware-configuration.nix
 
-# Minimale Konfiguration bauen, bevor sie installiert wird.
-sudo nixos-rebuild build --flake .#buls
+# Die volle Desktop-Konfiguration wird auf die eingehangte Ziel-SSD installiert.
 sudo nixos-install --flake .#buls
 ```
 
@@ -91,9 +91,8 @@ Home-Manager-Aktivierung in:
 ```
 
 Das betrifft mit hoeherer Wahrscheinlichkeit Anbieter- oder Nischenprogramme
-wie Antigravity, Codex CLI, Ente Auth, herdr und WhatsApp. Fuer jeden solchen
-Eintrag wird eine explizite, reproduzierbare Quelle entschieden; keine
-`curl | sh`-Installer.
+wie Antigravity, Codex CLI, Ente Auth und herdr. Fuer jeden solchen Eintrag wird
+eine explizite, reproduzierbare Quelle entschieden; keine `curl | sh`-Installer.
 
 Steam und Docker sind bewusst Systemdienste. Der Rest lebt im Home-Manager-
 Profil. Anmeldungen fuer Bitwarden, Discord, Nextcloud, Proton VPN, Signal,

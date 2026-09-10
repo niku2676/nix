@@ -27,9 +27,9 @@ let
     "spicetify-cli"
     "spotify"
     "stow"
-    "stremio"
+    "stremio-linux-shell"
     "typst"
-    "whatsapp-for-linux"
+    "karere"
     "zen-browser"
   ];
 

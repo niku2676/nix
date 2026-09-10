@@ -1,9 +1,7 @@
 {
   disko.devices.disk.nixos = {
-    # Replace this safe placeholder with the dedicated NixOS SSD, for example:
-    # /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_2TB_<serial>
-    # Never use the Windows disk here.
-    device = "/dev/disk/by-id/REPLACE_WITH_NIXOS_SSD";
+    # Dedicated NixOS SSD: P4-120, 111.8 GB. Never use a Windows disk here.
+    device = "/dev/disk/by-id/ata-P4-120_08B12Z593604";
     type = "disk";
     content = {
       type = "gpt";

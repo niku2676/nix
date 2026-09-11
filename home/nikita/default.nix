@@ -20,7 +20,6 @@ let
     "herdr"
     "lazygit"
     "nextcloud-client"
-    "neovim"
     "opencode"
     "protonvpn-gui"
     "signal-desktop"
@@ -53,9 +52,10 @@ in
   programs.fastfetch.enable = true;
   programs.gh.enable = true;
   programs.lazygit.enable = true;
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
+
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    VISUAL = "nvim";
   };
 
   # The install ISO only has a small writable Nix store. Applications are

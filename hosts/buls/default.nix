@@ -1,6 +1,8 @@
-{ lib, pkgs, bootstrap ? false, ... }:
+{ lib, pkgs, inputs, bootstrap ? false, ... }:
 
-{
+let
+  hyprland = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system};
+in {
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
@@ -27,7 +29,11 @@
   security.polkit.enable = true;
   services.openssh.enable = false;
 
-  programs.hyprland.enable = true;
+  programs.hyprland = {
+    enable = true;
+    package = hyprland.hyprland;
+    portalPackage = hyprland.xdg-desktop-portal-hyprland;
+  };
   services.greetd = {
     enable = true;
     settings.default_session = {

@@ -82,7 +82,11 @@ in
   # defaults. Kitty stays disabled: Ghostty is this setup's terminal.
   illogical-impulse = {
     enable = true;
-    hyprland.ozoneWayland.enable = true;
+    hyprland = {
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      xdgPortalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+      ozoneWayland.enable = true;
+    };
     dotfiles = {
       fish.enable = true;
       kitty.enable = false;

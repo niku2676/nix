@@ -23,6 +23,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # This is the Hyprland revision pinned by the end-4 Nix module itself.
+    # Its keybind syntax is not compatible with the newer Hyprland in nixpkgs.
+    hyprland.url = "github:hyprwm/Hyprland/584b844aaf72cd7ea6851117f1bd598b7467ffc1";
+
     illogical-impulse = {
       url = "github:xBLACKICEx/end-4-dots-hyprland-nixos";
       inputs.nixpkgs.follows = "nixpkgs";
